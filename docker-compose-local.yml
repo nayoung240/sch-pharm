@@ -1,0 +1,24 @@
+version: "3.8"                                          # 파일 규격 버전
+services:                                               # 이 항목 밑에 실행하려는 컨테이너들을 정의
+  sch-pharm-redis:                        # 서비스명
+    container_name: sch-pharm-redis       # 컨테이너 명
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: zerome240/sch-pharm-redis
+    ports:
+      - "6379:6379"
+  sch-pharm-database:
+    container_name: sch-pharm-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: zerome240/sch-pharm-database
+    environment:
+      - MARIADB_DATABASE=sch-pharm-database
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3308:3308"      # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
