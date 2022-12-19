@@ -5,12 +5,20 @@
 - MVP (Minimum Variable Product) 최소한의 기능만을 구현
 
 ## 강의 Git
-https://github.com/WonYong-Jang/Pharmacy-Recommendation
+- https://github.com/WonYong-Jang/Pharmacy-Recommendation
 
 ## Referense
-https://developers.kakao.com/docs/latest/ko/local/dev-guide
-https://www.data.go.kr/data/15065023/fileData.do
-https://postcode.map.daum.net/guide
+- 카카오 주소 검색
+  - https://developers.kakao.com/docs/latest/ko/local/dev-guide
+- 공공데이터 약국 현황
+  - https://www.data.go.kr/data/15065023/fileData.do
+- 카카오 우편번호
+  - https://postcode.map.daum.net/guide
+
+### 외부 API 호출하기 
+- 주의 사항: 외부 API의 호출 제한 확인이 필요하다!
+- 월간 제공량: 3,000,000건 / 일간 제공량: 100,000건
+- https://developers.kakao.com/tool/rest-api/open/get/v2-local-search-address.%7Bformat%7D
 
 ## 약국 찾기 서비스 요구사항
 - 약국 현황 데이터(공공 데이터)를 관리하고 있다 라고 가정하고, 약국 현황 데이터는 위도 경도의 위치 정보 데이터를 가지고 있다.
