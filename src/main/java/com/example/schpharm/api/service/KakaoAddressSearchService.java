@@ -21,7 +21,7 @@ public class KakaoAddressSearchService {
     private final KakaoUriBuilderService kakaoUriBuilderService;
 
     // yml 정의
-    @Value("${kakao.rest.api.key}")
+    @Value("${KAKAO_REST_API_KEY}")
     private String kakaoRestApiKey;
 
     public KakaoApiResponseDto requestAddressSearch(String address) {
