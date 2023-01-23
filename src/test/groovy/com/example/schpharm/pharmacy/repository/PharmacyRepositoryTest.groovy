@@ -2,13 +2,19 @@ package com.example.schpharm.pharmacy.repository
 
 import com.example.schpharm.AbstractIntegrationContainerBaseTest
 import com.example.schpharm.pharmacy.entity.Pharmacy
+import com.example.schpharm.pharmacy.service.PharmacyRepositoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest {
     @Autowired
     private PharmacyRepository pharmacyRepository
+
+    @Autowired
+    PharmacyRepositoryService pharmacyRepositoryService
 
     // 삭제하고 시작
     def setup() {
@@ -60,5 +66,25 @@ class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest {
         result.get(0).getPharmacyName() == name
         result.get(0).getLatitude() == latitude
         result.get(0).getLongitude() == longitude
+    }
+
+    def "BaseTimeEntity 등록"() {
+        given:
+        LocalDateTime now = LocalDateTime.now()
+        String address = "서울 특별시 성북구 종암동"
+        String name = "은혜 약국"
+
+        def pharmacy = Pharmacy.builder()
+                .pharmacyAddress(address)
+                .pharmacyName(name)
+                .build()
+
+        when:
+        pharmacyRepository.save(pharmacy)
+        def result = pharmacyRepository.findAll()
+
+        then:
+        result.get(0).getCreatedDate().isAfter(now)
+        result.get(0).getModifiedDate().isAfter(now)
     }
 }
