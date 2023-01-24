@@ -78,3 +78,7 @@
 - base62를 이용한 shorten url 개발하기 (길안내 URL)
 - redis를 이용하여 성능 최적화하기
 
+## UML
+
+![img.png](img.png)
+![img_1.png](img_1.png)
