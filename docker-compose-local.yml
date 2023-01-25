@@ -5,7 +5,7 @@ services:                                 # 이 항목 밑에 실행하려는 �
     build:
       dockerfile: Dockerfile
       context: ./redis
-    image: zerome240/sch-pharm-redis
+    image: smile240/sch-pharm-redis
     ports:
       - "6379:6379"
   sch-pharm-database:
@@ -13,7 +13,7 @@ services:                                 # 이 항목 밑에 실행하려는 �
     build:
       dockerfile: Dockerfile
       context: ./database
-    image: zerome240/sch-pharm-database
+    image: smile240/sch-pharm-database
     environment:
       - MARIADB_DATABASE=sch-pharm-database
       - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
@@ -21,4 +21,4 @@ services:                                 # 이 항목 밑에 실행하려는 �
       - ./database/config:/etc/mysql/conf.d
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
-      - "3308:3308"      # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+      - "3306:3306"      # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
