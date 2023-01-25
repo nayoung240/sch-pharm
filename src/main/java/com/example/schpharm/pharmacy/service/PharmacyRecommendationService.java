@@ -29,17 +29,14 @@ public class PharmacyRecommendationService {
         // retry 모두 실패 또는 빈 결과값인 경우
         if (Objects.isNull(kakaoApiResponseDto) || CollectionUtils.isEmpty(kakaoApiResponseDto.getDocumentList())) {
             log.error("[PharmacyRecommendationService.recommendPharmacyList fail] Input address: {}", address);
-            return Collections.emptyList();
+            return;
         }
 
         DocumentDto documentDto = kakaoApiResponseDto.getDocumentList().get(0);
 
-        List<Direction> directionList = directionService.buildDirectionList(documentDto);
-        //List<Direction> directionList = directionService.buildDirectionListByCategoryApi(documentDto);
+//        List<Direction> directionList = directionService.buildDirectionList(documentDto);
+        List<Direction> directionList = directionService.buildDirectionListByCategoryApi(documentDto);
 
-        return directionService.saveAll(directionList)
-                .stream()
-                .map(this::convertToOutputDto)
-                .collect(Collectors.toList());
+        directionService.saveAll(directionList);
     }
 }

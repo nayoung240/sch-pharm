@@ -1,6 +1,7 @@
 package com.example.schpharm.direction.service;
 
 import com.example.schpharm.api.dto.DocumentDto;
+import com.example.schpharm.api.service.KakaoCategorySearchService;
 import com.example.schpharm.direction.entity.Direction;
 import com.example.schpharm.direction.repository.DirectionRepository;
 import com.example.schpharm.pharmacy.dto.PharmacyDto;
@@ -27,6 +28,7 @@ public class DirectionService {
 
     private final PharmacySearchService pharmacySearchService;
     private final DirectionRepository directionRepository;
+    private final KakaoCategorySearchService kakaoCategorySearchService;
 
     @Transactional
     public List<Direction> saveAll(List<Direction> directionList) {
@@ -72,5 +74,30 @@ public class DirectionService {
 
         double earthRadius = 6371; //Kilometers
         return earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
+    }
+
+    public List<Direction> buildDirectionListByCategoryApi(DocumentDto inputDocumentDto) {
+
+        if(Objects.isNull(inputDocumentDto)) return Collections.emptyList();
+
+        // 약국 데이터 조회
+        // 사용자가 입력한 위도, 경도 받아서 근처 약국 조회
+
+        return kakaoCategorySearchService
+                .requestPharmacyCategorySearch(inputDocumentDto.getLatitude(), inputDocumentDto.getLongitude(), RADIUS_KM)
+                .getDocumentList()
+                .stream().map(resultDocumentDto ->
+                        Direction.builder()
+                                .inputAddress(inputDocumentDto.getAddressName())
+                                .inputLatitude(inputDocumentDto.getLatitude())
+                                .inputLongitude(inputDocumentDto.getLongitude())
+                                .targetAddress(resultDocumentDto.getAddressName())
+                                .targetLatitude(resultDocumentDto.getLatitude())
+                                .targetLongitude(resultDocumentDto.getLongitude())
+                                .targetPharmacyName(resultDocumentDto.getPlaceName())
+                                .distance(resultDocumentDto.getDistance() * 0.001) //km 단위
+                                .build())
+                .limit(MAX_SEARCH_COUNT)
+                .collect(Collectors.toList());
     }
 }
