@@ -38,7 +38,7 @@ public class PharmacyRecommendationService {
 //        List<Direction> directionList = directionService.buildDirectionList(documentDto);
         List<Direction> directionList = directionService.buildDirectionListByCategoryApi(documentDto);
 
-        directionService.saveAll(directionList)
+        return directionService.saveAll(directionList)
                 .stream()
                 .map(this::convertToOutputDto)
                 .collect(Collectors.toList());
@@ -49,8 +49,10 @@ public class PharmacyRecommendationService {
         return OutputDto.builder()
                 .pharmacyName(direction.getTargetPharmacyName())
                 .pharmacyAddress(direction.getTargetAddress())
-                .directionUrl(baseUrl + base62Service.encodeDirectionId(direction.getId()))
-                .roadViewUrl(ROAD_VIEW_BASE_URL + direction.getTargetLatitude() + "," + direction.getTargetLongitude())
+                .directionUrl("todo")
+//                .directionUrl(baseUrl + base62Service.encodeDirectionId(direction.getId()))
+                .roadViewUrl("todo")
+//                .roadViewUrl(ROAD_VIEW_BASE_URL + direction.getTargetLatitude() + "," + direction.getTargetLongitude())
                 .distance(String.format("%.2f km", direction.getDistance()))
                 .build();
     }

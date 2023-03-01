@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequiredArgsConstructor
 public class FormController {
-    private PharmacyRecommendationService pharmacyRecommendationService;
+    private final PharmacyRecommendationService pharmacyRecommendationService;
 
     @GetMapping("/")
     public String main() {
