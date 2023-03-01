@@ -3,6 +3,7 @@ package com.example.schpharm.pharmacy.service;
 import com.example.schpharm.api.dto.DocumentDto;
 import com.example.schpharm.api.dto.KakaoApiResponseDto;
 import com.example.schpharm.api.service.KakaoAddressSearchService;
+import com.example.schpharm.direction.dto.OutputDto;
 import com.example.schpharm.direction.entity.Direction;
 import com.example.schpharm.direction.service.DirectionService;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,13 @@ public class PharmacyRecommendationService {
     private final KakaoAddressSearchService kakaoAddressSearchService;
     private final DirectionService directionService;
 
-    public void recommendPharmacyList(String address) {
+    public List<OutputDto> recommendPharmacyList(String address) {
         KakaoApiResponseDto kakaoApiResponseDto = kakaoAddressSearchService.requestAddressSearch(address);
 
         // retry 모두 실패 또는 빈 결과값인 경우
         if (Objects.isNull(kakaoApiResponseDto) || CollectionUtils.isEmpty(kakaoApiResponseDto.getDocumentList())) {
             log.error("[PharmacyRecommendationService.recommendPharmacyList fail] Input address: {}", address);
-            return;
+            return Collections.emptyList();
         }
 
         DocumentDto documentDto = kakaoApiResponseDto.getDocumentList().get(0);
@@ -37,6 +38,20 @@ public class PharmacyRecommendationService {
 //        List<Direction> directionList = directionService.buildDirectionList(documentDto);
         List<Direction> directionList = directionService.buildDirectionListByCategoryApi(documentDto);
 
-        directionService.saveAll(directionList);
+        directionService.saveAll(directionList)
+                .stream()
+                .map(this::convertToOutputDto)
+                .collect(Collectors.toList());
+    }
+
+    private OutputDto convertToOutputDto(Direction direction) {
+
+        return OutputDto.builder()
+                .pharmacyName(direction.getTargetPharmacyName())
+                .pharmacyAddress(direction.getTargetAddress())
+                .directionUrl(baseUrl + base62Service.encodeDirectionId(direction.getId()))
+                .roadViewUrl(ROAD_VIEW_BASE_URL + direction.getTargetLatitude() + "," + direction.getTargetLongitude())
+                .distance(String.format("%.2f km", direction.getDistance()))
+                .build();
     }
 }
