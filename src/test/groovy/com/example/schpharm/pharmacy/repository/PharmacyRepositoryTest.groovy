@@ -11,13 +11,13 @@ import java.time.LocalDateTime
 
 class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest {
     @Autowired
-    private PharmacyRepository pharmacyRepository
-
-    @Autowired
     PharmacyRepositoryService pharmacyRepositoryService
 
+    @Autowired
+    PharmacyRepository pharmacyRepository
+
     // 삭제하고 시작
-    def setup() {
+    void setup() {
         pharmacyRepository.deleteAll()
     }
 

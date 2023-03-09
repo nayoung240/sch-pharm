@@ -24,7 +24,8 @@ public class KakaoAddressSearchService {
     private final KakaoUriBuilderService kakaoUriBuilderService;
 
     // yml 정의
-    @Value("${KAKAO_REST_API_KEY}")
+//    @Value("${KAKAO_REST_API_KEY}")
+    @Value("${kakao.rest.api.key}")
     private String kakaoRestApiKey;
 
     @Retryable (
