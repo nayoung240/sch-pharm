@@ -25,15 +25,16 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/sch-pharm
+    url: jdbc:mariadb://localhost:3307/sch-pharm
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
   redis:
     host: localhost
     port: 6379
   jpa:
+    database: mysql
     hibernate:
-      ddl-auto: validate # prod 배포시 validate
+      ddl-auto: create # prod 배포시 validate
     show-sql: true
 
 pharmacy:
@@ -48,7 +49,7 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://sch-pharm-database:3306/sch-pharm
+    url: jdbc:mariadb://sch-pharm-database:3307/sch-pharm
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
   redis:
@@ -56,7 +57,7 @@ spring:
     port: 6379
   jpa:
     hibernate:
-      ddl-auto: validate # prod 배포시 validate
+      ddl-auto: create # prod 배포시 validate
     show-sql: true
 
 pharmacy:
