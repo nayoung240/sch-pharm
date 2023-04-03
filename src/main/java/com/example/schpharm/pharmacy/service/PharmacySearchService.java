@@ -20,7 +20,11 @@ public class PharmacySearchService {
     public List<PharmacyDto> searchPharmacyDtoList() {
         // redis 조회
         List<PharmacyDto> pharmacyDtoList = pharmacyRedisTemplateService.findAll();
-        if(!pharmacyDtoList.isEmpty()) return pharmacyDtoList;
+
+        if(!pharmacyDtoList.isEmpty()) {
+            log.info("redis findAll success");
+            return pharmacyDtoList;
+        }
 
         // db 조회
         return pharmacyRepositoryService.findAll()
