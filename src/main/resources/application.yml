@@ -57,10 +57,10 @@ spring:
     port: 6379
   jpa:
     hibernate:
-      ddl-auto: create # prod 배포시 validate
+      ddl-auto: validate # prod 배포시 validate
     show-sql: true
 
 pharmacy:
   recommendation:
     base:
-      url: http://3.38.78.187/dir/
+      url: http://localhosts/dir/ #aws ec2 ip 할당 받은 후 변경 예정
